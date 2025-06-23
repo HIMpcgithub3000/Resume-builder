@@ -1,0 +1,46 @@
+{
+  "name": "resume-builder",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fontsource/quicksand": "^5.2.8",
+    "@fontsource/raleway": "^5.2.6",
+    "autoprefixer": "^10.4.16",
+    "cra-template-pwa": "2.0.0",
+    "framer-motion": "^12.18.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
+    "postcss": "^8.4.31",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.6.2",
+    "react-scripts": "^5.0.1",
+    "react-to-print": "^3.1.0",
+    "tailwindcss": "^3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
