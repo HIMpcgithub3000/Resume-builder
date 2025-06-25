@@ -1,14 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReactToPrint } from 'react-to-print';
+import ResumePreview from './ResumePreview';
 
 const steps = [
   'Personal Info',
+  'Education',
   'Social Links',
   'Professional Summary',
   'Skills',
   'Experience',
-  'Education',
   'Projects',
   'Awards',
   'Extracurricular Activities',
@@ -59,7 +60,6 @@ const StepForm = ({ form, setForm, onFinish }) => {
   const handlePrint = useReactToPrint({
     content: () => resumeRef.current,
     documentTitle: 'Resume',
-    onAfterPrint: () => setDone(true),
   });
 
   const renderStep = () => {
@@ -90,6 +90,24 @@ const StepForm = ({ form, setForm, onFinish }) => {
 
       case 1:
         return (
+          <div className="flex flex-col gap-6">
+            {form.education.map((edu, idx) => (
+              <div key={idx} className="border-b pb-4 mb-2">
+                <input className="input" placeholder="Degree" value={edu.degree} onChange={e => handleArrayChange('education', idx, 'degree', e.target.value)} />
+                <input className="input" placeholder="School" value={edu.school} onChange={e => handleArrayChange('education', idx, 'school', e.target.value)} />
+                <div className="flex gap-2">
+                  <input className="input w-1/2" placeholder="Start" value={edu.start} onChange={e => handleArrayChange('education', idx, 'start', e.target.value)} />
+                  <input className="input w-1/2" placeholder="End" value={edu.end} onChange={e => handleArrayChange('education', idx, 'end', e.target.value)} />
+                </div>
+                <button type="button" onClick={() => handleRemoveEntry('education', idx)} className="text-red-500 mt-1">Remove</button>
+              </div>
+            ))}
+            <button type="button" onClick={() => handleAddEntry('education', { degree: '', school: '', start: '', end: '' })} className="text-green-600">+ Add Education</button>
+          </div>
+        );
+
+      case 2:
+        return (
           <div className="flex flex-col gap-4">
             {form.social.map((s, idx) => (
               <div key={idx} className="flex gap-2 items-center">
@@ -116,17 +134,25 @@ const StepForm = ({ form, setForm, onFinish }) => {
           </div>
         );
 
-      case 2:
+      case 3:
         return (
-          <textarea
-            className="input min-h-[80px]"
-            placeholder="Professional Summary"
-            value={form.summary}
-            onChange={e => setForm({ ...form, summary: e.target.value })}
-          />
+          <div className="flex flex-col gap-2">
+            <textarea
+              className="input min-h-[80px]"
+              placeholder="Professional Summary"
+              value={form.summary}
+              onChange={e => {
+                if (e.target.value.length <= 500) {
+                  setForm({ ...form, summary: e.target.value });
+                }
+              }}
+              maxLength={500}
+            />
+            <div className="text-right text-xs text-gray-500">{form.summary.length}/500 characters</div>
+          </div>
         );
 
-      case 3:
+      case 4:
         return (
           <div>
             <div className="flex gap-2 mb-2">
@@ -163,40 +189,33 @@ const StepForm = ({ form, setForm, onFinish }) => {
             </div>
           </div>
         );
-      case 4:
+      case 5:
         return (
           <div className="flex flex-col gap-6">
             {form.experience.map((exp, idx) => (
               <div key={idx} className="border-b pb-4 mb-2">
                 <input className="input" placeholder="Job Title" value={exp.title} onChange={e => handleArrayChange('experience', idx, 'title', e.target.value)} />
                 <input className="input" placeholder="Company" value={exp.company} onChange={e => handleArrayChange('experience', idx, 'company', e.target.value)} />
+                <textarea
+                  className="input"
+                  placeholder="Description"
+                  value={exp.description}
+                  onChange={e => {
+                    if (e.target.value.length <= 100) {
+                      handleArrayChange('experience', idx, 'description', e.target.value);
+                    }
+                  }}
+                  maxLength={100}
+                />
+                <div className="text-right text-xs text-gray-500">{exp.description.length}/100 characters</div>
                 <div className="flex gap-2">
                   <input className="input w-1/2" placeholder="Start" value={exp.start} onChange={e => handleArrayChange('experience', idx, 'start', e.target.value)} />
                   <input className="input w-1/2" placeholder="End" value={exp.end} onChange={e => handleArrayChange('experience', idx, 'end', e.target.value)} />
                 </div>
-                <textarea className="input" placeholder="Description" value={exp.description} onChange={e => handleArrayChange('experience', idx, 'description', e.target.value)} />
                 <button type="button" onClick={() => handleRemoveEntry('experience', idx)} className="text-red-500 mt-1">Remove</button>
               </div>
             ))}
             <button type="button" onClick={() => handleAddEntry('experience', { title: '', company: '', start: '', end: '', description: '' })} className="text-green-600">+ Add Experience</button>
-          </div>
-        );
-      case 5:
-        return (
-          <div className="flex flex-col gap-6">
-            {form.education.map((edu, idx) => (
-              <div key={idx} className="border-b pb-4 mb-2">
-                <input className="input" placeholder="Degree" value={edu.degree} onChange={e => handleArrayChange('education', idx, 'degree', e.target.value)} />
-                <input className="input" placeholder="School" value={edu.school} onChange={e => handleArrayChange('education', idx, 'school', e.target.value)} />
-                <div className="flex gap-2">
-                  <input className="input w-1/2" placeholder="Start" value={edu.start} onChange={e => handleArrayChange('education', idx, 'start', e.target.value)} />
-                  <input className="input w-1/2" placeholder="End" value={edu.end} onChange={e => handleArrayChange('education', idx, 'end', e.target.value)} />
-                </div>
-                <textarea className="input" placeholder="Description" value={edu.description} onChange={e => handleArrayChange('education', idx, 'description', e.target.value)} />
-                <button type="button" onClick={() => handleRemoveEntry('education', idx)} className="text-red-500 mt-1">Remove</button>
-              </div>
-            ))}
-            <button type="button" onClick={() => handleAddEntry('education', { degree: '', school: '', start: '', end: '', description: '' })} className="text-green-600">+ Add Education</button>
           </div>
         );
       case 6:
@@ -205,8 +224,19 @@ const StepForm = ({ form, setForm, onFinish }) => {
             {form.projects.map((proj, idx) => (
               <div key={idx} className="border-b pb-4 mb-2">
                 <input className="input" placeholder="Project Title" value={proj.title} onChange={e => handleArrayChange('projects', idx, 'title', e.target.value)} />
-                <textarea className="input" placeholder="Description" value={proj.description} onChange={e => handleArrayChange('projects', idx, 'description', e.target.value)} />
-                <input className="input" placeholder="Highlights (comma separated)" value={proj.highlights} onChange={e => handleArrayChange('projects', idx, 'highlights', e.target.value)} />
+                <input className="input" placeholder="Skills Used (comma separated)" value={proj.highlights} onChange={e => handleArrayChange('projects', idx, 'highlights', e.target.value)} />
+                <textarea
+                  className="input"
+                  placeholder="Description"
+                  value={proj.description}
+                  onChange={e => {
+                    if (e.target.value.length <= 150) {
+                      handleArrayChange('projects', idx, 'description', e.target.value);
+                    }
+                  }}
+                  maxLength={150}
+                />
+                <div className="text-right text-xs text-gray-500">{proj.description.length}/150 characters</div>
                 <button type="button" onClick={() => handleRemoveEntry('projects', idx)} className="text-red-500 mt-1">Remove</button>
               </div>
             ))}
@@ -302,6 +332,9 @@ const StepForm = ({ form, setForm, onFinish }) => {
           </div>
         </motion.div>
       </AnimatePresence>
+      <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+        <ResumePreview ref={resumeRef} form={form} />
+      </div>
       <style>{`
         .input {
           @apply w-full rounded-lg border-2 border-gray-200 focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none p-3 transition-all;

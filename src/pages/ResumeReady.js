@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaCheckCircle, FaDownload, FaSignOutAlt } from 'react-icons/fa';
-import { useReactToPrint } from 'react-to-print';
+import { FaCheckCircle, FaSignOutAlt } from 'react-icons/fa';
+import DownloadButton from '../components/DownloadButton';
 import ResumePreview from '../components/ResumePreview';
 
-const ResumeReady = ({ resumeRef, form }) => {
+const Printable = React.forwardRef((props, ref) => (
+  <div ref={ref} style={{ background: 'white', color: 'black', padding: 40 }}>
+    <h1>Test Resume</h1>
+    <p>This is a test.</p>
+  </div>
+));
+
+const ResumeReady = ({ form }) => {
+  const resumeRef = useRef();
   const navigate = useNavigate();
-  // Use react-to-print for download
-  const handlePrint = useReactToPrint({
-    content: () => resumeRef.current,
-    documentTitle: 'Resume',
-  });
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#B6E388] relative overflow-hidden">
+    <div className="container mx-auto flex items-center justify-center min-h-screen relative">
       {/* Decorative circles */}
       {[80, 120, 200, 60, 100].map((size, i) => (
         <div
@@ -32,12 +35,10 @@ const ResumeReady = ({ resumeRef, form }) => {
         <h2 className="text-2xl font-bold text-gray-700 mb-2">Your resume is ready!</h2>
         <p className="text-gray-500 text-center mb-6">Your resume has been successfully built. Click below to download your resume.</p>
         <div className="flex gap-4">
-          <button
+          <DownloadButton
+            resumeRef={resumeRef}
             className="bg-[#B6E388] hover:bg-[#A3D977] text-green-900 font-semibold px-6 py-2 rounded-lg flex items-center gap-2 shadow"
-            onClick={handlePrint}
-          >
-            <FaDownload /> Download
-          </button>
+          />
           <button
             className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-6 py-2 rounded-lg flex items-center gap-2 shadow"
             onClick={() => navigate('/')}
@@ -45,7 +46,7 @@ const ResumeReady = ({ resumeRef, form }) => {
             <FaSignOutAlt /> Logout
           </button>
         </div>
-        {/* Hidden resume for printing */}
+        {/* Hidden resume for printing - this is the ONLY place the ref is used */}
         <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
           <ResumePreview ref={resumeRef} form={form} />
         </div>

@@ -33,14 +33,18 @@ const Builder = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#678D58] flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-6 relative">
-        <StepForm form={form} setForm={setForm} onFinish={handleFinish} />
-      </div>
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6 relative">
-        <ResumePreview ref={resumeRef} form={form} />
-        <div className="absolute top-6 right-6">
-          <LogoutIcon />
+    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden" style={{ background: `url('/ChatGPT Image Jun 23, 2025, 10_48_27 PM.png') center/cover no-repeat` }}>
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 bg-black/60 z-0" />
+      <div className="container mx-auto flex flex-col md:flex-row gap-8 z-10 relative">
+        <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-6 relative">
+          <StepForm form={form} setForm={setForm} onFinish={handleFinish} />
+        </div>
+        <div className="w-full md:w-1/2 flex items-center justify-center p-6 relative">
+          <ResumePreview ref={resumeRef} form={form} />
+          <div className="absolute top-6 right-6">
+           
+          </div>
         </div>
       </div>
     </div>

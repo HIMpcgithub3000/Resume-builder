@@ -54,10 +54,15 @@ const ResumePreview = forwardRef(({ form }, ref) => {
         <div className="mb-2 print:mb-1">
           <div className="uppercase font-bold text-xs text-gray-700 tracking-widest print:text-xs print:font-bold print:mb-0">EDUCATION</div>
           <div className="flex flex-col print:flex-row print:justify-between">
-            <span className="font-semibold text-gray-900 print:text-sm">{form.education[0].degree} {form.education[0].school && '—'} {form.education[0].school}</span>
-            <span className="text-gray-600 text-xs print:text-xs">{form.education[0].start} {form.education[0].start && form.education[0].end && '–'} {form.education[0].end}</span>
+            <span className="font-semibold text-gray-900 print:text-sm">
+              {form.education[0].degree} {form.education[0].school && '—'} {form.education[0].school}
+            </span>
+            <span className="text-gray-600 text-xs print:text-xs">
+              {form.education[0].start && new Date(form.education[0].start).toLocaleDateString('en-GB')}
+              {form.education[0].start && form.education[0].end && ' – '}
+              {form.education[0].end && new Date(form.education[0].end).toLocaleDateString('en-GB')}
+            </span>
           </div>
-          {form.education[0].description && <div className="text-gray-700 text-xs print:text-xs">{form.education[0].description}</div>}
         </div>
       )}
       {/* Section: Skills/Tools */}
@@ -72,18 +77,23 @@ const ResumePreview = forwardRef(({ form }, ref) => {
       {/* Section: Experience */}
       {form.experience && form.experience.some(e => e.title || e.company) && (
         <div className="mb-2 print:mb-1">
-          <div className="uppercase font-bold text-xs text-gray-700 tracking-widest print:text-xs print:font-bold print:mb-0"> EXPERIENCE</div>
+          <div className="uppercase font-bold text-xs text-gray-700 tracking-widest print:text-xs print:font-bold print:mb-0">EXPERIENCE</div>
           {form.experience.map((exp, idx) => (
             (exp.title || exp.company) && (
               <div key={idx} className="mb-1 print:mb-0">
-                <div className="flex flex-col print:flex-row print:justify-between">
-                  <span className="font-bold text-gray-900 print:text-sm">{exp.title}</span>
-                  <span className="text-gray-600 text-xs print:text-xs">{exp.start} {exp.start && exp.end && '–'} {exp.end}</span>
+                {/* Role/Title */}
+                <div className="font-bold text-gray-900 print:text-sm">{exp.title}</div>
+                {/* Company and Dates Row */}
+                <div className="flex justify-between items-center">
+                  <h2 className="text-base font-semibold text-gray-800 print:text-xs">{exp.company}</h2>
+                  <span className="text-gray-600 text-xs print:text-xs">
+                    {exp.start && new Date(exp.start).toLocaleDateString('en-GB')}
+                    {exp.start && exp.end && ' – '}
+                    {exp.end && new Date(exp.end).toLocaleDateString('en-GB')}
+                  </span>
                 </div>
-                <div className="text-gray-700 text-xs print:text-xs font-semibold">{exp.company}</div>
-                <div className="text-gray-800 text-xs print:text-xs">
-                  {renderBullets(exp.description)}
-                </div>
+                {/* Description */}
+                <div className="text-gray-800 text-xs print:text-xs break-words whitespace-pre-line mt-1">{exp.description}</div>
               </div>
             )
           ))}
@@ -116,7 +126,7 @@ const ResumePreview = forwardRef(({ form }, ref) => {
       {form.summary && (
         <div className="mb-2 print:mb-1">
           <div className="uppercase font-bold text-xs text-gray-700 tracking-widest print:text-xs print:font-bold print:mb-0">PROFESSIONAL SUMMARY</div>
-          <div className="text-gray-800 text-xs print:text-xs">{form.summary}</div>
+          <div className="text-gray-800 text-xs print:text-xs break-words whitespace-pre-line">{form.summary}</div>
         </div>
       )}
       {/* Section: Awards */}

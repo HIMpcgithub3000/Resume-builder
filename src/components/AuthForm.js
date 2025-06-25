@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FaUser, FaLock, FaEnvelope, FaGoogle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 
-const AuthForm = ({ mode }) => {
-  const navigate = useNavigate();
+const AuthForm = ({ mode, onSuccess }) => {
   const [form, setForm] = useState({ email: '', password: '', name: '' });
 
   const handleChange = (e) => {
@@ -13,7 +11,9 @@ const AuthForm = ({ mode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTimeout(() => navigate('/builder'), 500); // Simulate auth
+    setTimeout(() => {
+      if (onSuccess) onSuccess();
+    }, 500); // Simulate auth
   };
 
   return (
@@ -23,51 +23,62 @@ const AuthForm = ({ mode }) => {
       exit={{ y: 40, opacity: 0 }}
       transition={{ type: 'spring', stiffness: 120, damping: 18 }}
       onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow-2xl px-8 py-10 w-80 flex flex-col gap-6 relative"
-      style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}
+      className="w-full flex flex-col gap-5"
     >
       {mode === 'signup' && (
         <div className="relative">
-          <FaUser className="absolute left-3 top-3 text-[#678D58]" />
+          <FaUser className="absolute left-3 top-3 text-green-400" />
           <input
             type="text"
             name="name"
             value={form.name}
             onChange={handleChange}
             required
-            className="pl-10 pr-3 py-3 w-full rounded-lg border-2 border-gray-200 focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none transition-all peer bg-transparent"
+            placeholder="Full Name"
+            className="pl-10 pr-3 py-3 w-full rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:border-green-400 focus:ring-2 focus:ring-green-400 outline-none transition-all peer"
           />
-          <label className={`absolute left-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-all duration-200 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-green-600 ${form.name ? '-top-2 text-xs text-green-600' : ''}`}>Name</label>
         </div>
       )}
       <div className="relative">
-        <FaEnvelope className="absolute left-3 top-3 text-[#678D58]" />
+        <FaEnvelope className="absolute left-3 top-3 text-green-400" />
         <input
           type="email"
           name="email"
           value={form.email}
           onChange={handleChange}
           required
-          className="pl-10 pr-3 py-3 w-full rounded-lg border-2 border-gray-200 focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none transition-all peer bg-transparent"
+          placeholder="Email Address"
+          className="pl-10 pr-3 py-3 w-full rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:border-green-400 focus:ring-2 focus:ring-green-400 outline-none transition-all peer"
         />
-        <label className={`absolute left-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-all duration-200 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-green-600 ${form.email ? '-top-2 text-xs text-green-600' : ''}`}>Email</label>
       </div>
       <div className="relative">
-        <FaLock className="absolute left-3 top-3 text-[#678D58]" />
+        <FaLock className="absolute left-3 top-3 text-green-400" />
         <input
           type="password"
           name="password"
           value={form.password}
           onChange={handleChange}
           required
-          className="pl-10 pr-3 py-3 w-full rounded-lg border-2 border-gray-200 focus:border-green-400 focus:ring-2 focus:ring-green-200 outline-none transition-all peer bg-transparent"
+          placeholder="Password"
+          className="pl-10 pr-3 py-3 w-full rounded-lg bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:border-green-400 focus:ring-2 focus:ring-green-400 outline-none transition-all peer"
         />
-        <label className={`absolute left-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-all duration-200 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-green-600 ${form.password ? '-top-2 text-xs text-green-600' : ''}`}>Password</label>
       </div>
+      {mode === 'login' && (
+        <div className="flex justify-end mb-2">
+          <button type="button" className="text-green-300 text-sm hover:underline focus:outline-none">Forgot Password?</button>
+        </div>
+      )}
+      <button
+        type="button"
+        className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-black/80 text-white font-semibold text-base shadow-md hover:bg-black/90 transition mb-2 border border-white/20"
+        // onClick={handleGoogleLogin} // Simulate Google login
+      >
+        <FaGoogle className="text-lg" /> Continue with Google
+      </button>
       <motion.button
-        whileHover={{ scale: 1.05, boxShadow: '0 0 12px #b6e388' }}
+        whileHover={{ scale: 1.03, boxShadow: '0 0 12px #22c55e' }}
         whileTap={{ scale: 0.97 }}
-        className="mt-4 px-6 py-3 rounded-full bg-[#678D58] text-white font-bold text-lg shadow-md focus:outline-none focus:ring-4 focus:ring-green-200 flex items-center justify-center gap-2"
+        className="w-full px-6 py-3 rounded-lg bg-green-500 text-white font-bold text-lg shadow-md focus:outline-none focus:ring-4 focus:ring-green-400 flex items-center justify-center gap-2 mt-1"
         type="submit"
       >
         {mode === 'login' ? 'Login' : 'Sign Up'}
