@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useReactToPrint } from 'react-to-print';
 import ResumePreview from './ResumePreview';
+import ResumeReady from './ResumeReady';
 
 const steps = [
   'Personal Info',
