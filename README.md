@@ -1,4 +1,4 @@
-# 🙏 Namaste Resume Builder
+# Resume Builder
 
 Namaste Resume Builder is a culturally-inspired, modern resume creation platform that combines elegant UI with real-time resume generation. Designed to provide users a polished, guided, and fully interactive experience, this project reflects both functionality and creative thinking.
 
